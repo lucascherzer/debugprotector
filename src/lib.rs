@@ -1,7 +1,7 @@
 mod antidbg;
 mod exit_codes;
 
-fn detect() {
+pub fn detect() {
     unsafe {
         antidbg::adbg_is_debugger_present();
         antidbg::adbg_being_debugged_peb();
