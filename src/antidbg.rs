@@ -3,6 +3,7 @@
 #[allow(unused_assignments)]
 
 use crate::exit_codes;
+use crate::exit_codes::DebugStatus;
 use std::arch::asm;
 use std::mem::size_of;
 use std::process;
@@ -22,13 +23,15 @@ use winapi::um::winnt::{HANDLE};
 use winapi::um::winuser::FindWindowW;
 use winsafe::WString;
 
-pub unsafe fn adbg_is_debugger_present() {
+pub unsafe fn adbg_is_debugger_present() -> DebugStatus {
     if IsDebuggerPresent() != 0 {
-        process::exit(exit_codes::DBG_ISDEBUGGERPRESENT);
+        return DebugStatus::DBG_ISDEBUGGERPRESENT;
+    } else {
+        return DebugStatus::DBG_NONEFOUND;
     }
 }
 
-pub fn adbg_being_debugged_peb() {
+pub fn adbg_being_debugged_peb() -> DebugStatus {
     let mut found: BOOL = 0;
 
     unsafe {
@@ -54,11 +57,13 @@ pub fn adbg_being_debugged_peb() {
     }
 
     if found != 0 {
-        process::exit(exit_codes::DBG_BEINGEBUGGEDPEB);
+        return DebugStatus::DBG_BEINGEBUGGEDPEB;
+    } else {
+        return DebugStatus::DBG_NONEFOUND;
     }
 }
 
-pub fn adbg_nt_global_flag_peb() {
+pub fn adbg_nt_global_flag_peb() -> DebugStatus {
     let mut found: BOOL = 0;
 
     unsafe {
@@ -84,11 +89,13 @@ pub fn adbg_nt_global_flag_peb() {
     }
 
     if found != 0 {
-        process::exit(exit_codes::DBG_NTGLOBALFLAGPEB);
+        return DebugStatus::DBG_NTGLOBALFLAGPEB;
+    } else {
+        return DebugStatus::DBG_NONEFOUND;
     }
 }
 
-pub unsafe fn adbg_check_remote_debugger_present() {
+pub unsafe fn adbg_check_remote_debugger_present() -> DebugStatus {
     let mut h_process: HANDLE = INVALID_HANDLE_VALUE;
     let mut found: BOOL = 0;
 
@@ -96,11 +103,13 @@ pub unsafe fn adbg_check_remote_debugger_present() {
     CheckRemoteDebuggerPresent(h_process, &mut found);
 
     if found != 0 {
-        process::exit(exit_codes::DBG_CHECKREMOTEDEBUGGERPRESENT);
+        return DebugStatus::DBG_CHECKREMOTEDEBUGGERPRESENT;
+    } else {
+        return DebugStatus::DBG_NONEFOUND;
     }
 }
 
-pub unsafe fn adbg_check_window_class_name() {
+pub unsafe fn adbg_check_window_class_name() -> DebugStatus {
     let mut found: bool = false;
     let mut h_window: HWND = ptr::null_mut();
     let window_class_name_olly: WString = WString::from_str("OLLYDBG");
@@ -119,11 +128,13 @@ pub unsafe fn adbg_check_window_class_name() {
     }
 
     if found {
-        process::exit(exit_codes::DBG_FINDWINDOW);
+        return DebugStatus::DBG_FINDWINDOW;
+    } else {
+        return DebugStatus::DBG_NONEFOUND;
     }
 }
 
-pub unsafe fn adbg_check_window_name() {
+pub unsafe fn adbg_check_window_name() -> DebugStatus {
     let mut found: bool = false;
     let mut h_window: HWND = ptr::null_mut();
     let window_name_olly: WString = WString::from_str("OLLYDBG");
@@ -142,11 +153,13 @@ pub unsafe fn adbg_check_window_name() {
     }
 
     if found {
-        process::exit(exit_codes::DBG_FINDWINDOW);
+        return DebugStatus::DBG_FINDWINDOW;
+    } else {
+        return DebugStatus::DBG_NONEFOUND;
     }
 }
 
-pub unsafe fn adbg_process_file_name() {
+pub unsafe fn adbg_process_file_name() -> DebugStatus{
     let debuggers_filename: Vec<String> = vec![
         String::from("cheatengine-x86_64.exe"),
         String::from("ollydbg.exe"),
@@ -198,11 +211,12 @@ pub unsafe fn adbg_process_file_name() {
                     .to_lowercase();
 
                 if exe_file == debugger {
-                    process::exit(exit_codes::DBG_PROCESSFILENAME);
+                    return DebugStatus::DBG_PROCESSFILENAME;
                 }
             }
         }
     }
 
     CloseHandle(process_list);
+    return DebugStatus::DBG_NONEFOUND;
 }
