@@ -2,7 +2,7 @@
 
 ## Using default method
 
-Default method will check debugger and self kill program
+Default method will check debugger and self kill the program
 
 ```
 use debugprotector::detect;
@@ -14,7 +14,7 @@ fn main() {
 
 ## Using single method.
 
-This crate have the following functions:
+This crate has the following functions:
 
 ```
 use debugprotector::antidbg;
