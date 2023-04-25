@@ -25,9 +25,9 @@ use winsafe::WString;
 
 pub unsafe fn adbg_is_debugger_present() -> DebugStatus {
     if IsDebuggerPresent() != 0 {
-        return DebugStatus::DBG_ISDEBUGGERPRESENT;
+        return DebugStatus::IsDebuggerPresent;
     } else {
-        return DebugStatus::DBG_NONEFOUND;
+        return DebugStatus::None;
     }
 }
 
@@ -57,9 +57,9 @@ pub fn adbg_being_debugged_peb() -> DebugStatus {
     }
 
     if found != 0 {
-        return DebugStatus::DBG_BEINGEBUGGEDPEB;
+        return DebugStatus::BeingDebuggedPeb;
     } else {
-        return DebugStatus::DBG_NONEFOUND;
+        return DebugStatus::None;
     }
 }
 
@@ -89,9 +89,9 @@ pub fn adbg_nt_global_flag_peb() -> DebugStatus {
     }
 
     if found != 0 {
-        return DebugStatus::DBG_NTGLOBALFLAGPEB;
+        return DebugStatus::NtGlobalFlagPeb;
     } else {
-        return DebugStatus::DBG_NONEFOUND;
+        return DebugStatus::None;
     }
 }
 
@@ -103,9 +103,9 @@ pub unsafe fn adbg_check_remote_debugger_present() -> DebugStatus {
     CheckRemoteDebuggerPresent(h_process, &mut found);
 
     if found != 0 {
-        return DebugStatus::DBG_CHECKREMOTEDEBUGGERPRESENT;
+        return DebugStatus::RemoteDebuggerPresent;
     } else {
-        return DebugStatus::DBG_NONEFOUND;
+        return DebugStatus::None;
     }
 }
 
@@ -128,9 +128,9 @@ pub unsafe fn adbg_check_window_class_name() -> DebugStatus {
     }
 
     if found {
-        return DebugStatus::DBG_FINDWINDOW;
+        return DebugStatus::FoundOpenWindow;
     } else {
-        return DebugStatus::DBG_NONEFOUND;
+        return DebugStatus::None;
     }
 }
 
@@ -153,9 +153,9 @@ pub unsafe fn adbg_check_window_name() -> DebugStatus {
     }
 
     if found {
-        return DebugStatus::DBG_FINDWINDOW;
+        return DebugStatus::FoundOpenWindow;
     } else {
-        return DebugStatus::DBG_NONEFOUND;
+        return DebugStatus::None;
     }
 }
 
@@ -211,12 +211,12 @@ pub unsafe fn adbg_process_file_name() -> DebugStatus{
                     .to_lowercase();
 
                 if exe_file == debugger {
-                    return DebugStatus::DBG_PROCESSFILENAME;
+                    return DebugStatus::DebuggerProcessFilename;
                 }
             }
         }
     }
 
     CloseHandle(process_list);
-    return DebugStatus::DBG_NONEFOUND;
+    return DebugStatus::None;
 }
