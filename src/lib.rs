@@ -36,3 +36,24 @@ pub fn debugger_present() -> bool {
         false
     }
 }
+
+/// Returns a vector of all found indicators of a debugger
+/// # Example
+/// If a a call to the Windows API function `IsDebuggerPresent` returns true and a process named `ida.exe` is found to be running,
+/// the function will return a `vec![DebugStatus::IsDebuggerPresent, DebugStatus::DebuggerProcessFilename]`.
+/// If no indicators are found, an emtpy `Vec` is returned
+pub fn running_debuggers() -> Vec<DebugStatus> {
+    let mut found: Vec<DebugStatus> = Vec::new();
+    for check in CHECKS {
+        unsafe {
+            let check_res = check();
+            if let DebugStatus::None = check_res {
+                continue;
+            } else {
+                found.push(check_res);
+            }
+        }
+    }
+    found
+
+}
