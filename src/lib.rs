@@ -3,6 +3,7 @@ mod exit_codes;
 
 use crate::exit_codes::DebugStatus;
 
+// Check for a debugger and exit if there is one
 pub fn detect() {
     if debugger_present() {
         std::process::exit(0); // Exit code would need to be changed accordingly
