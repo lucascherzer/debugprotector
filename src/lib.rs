@@ -24,6 +24,17 @@ pub fn detect() {
 /// # Returns
 /// * `true` if it found a debugger
 /// * `false` if it did **not** find a debugger
+/// # Example
+/// ```rs
+/// use debugprotector::debugger_present;
+/// 
+/// let being_debugged = debugger_present();
+/// if being_debugged {
+///     println!("There is a debugger watching");
+/// } else {
+///     println!("No debugger present");
+/// }
+/// ```
 pub fn debugger_present() -> bool {
     unsafe {
         for check in CHECKS {
@@ -41,7 +52,12 @@ pub fn debugger_present() -> bool {
 /// # Example
 /// If a a call to the Windows API function `IsDebuggerPresent` returns true and a process named `ida.exe` is found to be running,
 /// the function will return a `vec![DebugStatus::IsDebuggerPresent, DebugStatus::DebuggerProcessFilename]`.
-/// If no indicators are found, an emtpy `Vec` is returned
+/// If no indicators are found, an emtpy `Vec` is returned.
+/// ```rs
+/// use debugprotector::running_debuggers;
+/// use debugprotector::exit_codes::DebugStatus;
+/// assert_eq(running_debuggers(), vec![DebugStatus::IsDebuggerPresent, DebugStatus::DebuggerProcessFilename])
+/// ```
 pub fn running_debuggers() -> Vec<DebugStatus> {
     let mut found: Vec<DebugStatus> = Vec::new();
     for check in CHECKS {
