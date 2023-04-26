@@ -2,9 +2,9 @@
 
 ## Using default method
 
-Default method will check debugger and self kill the program
+The `detect` method will check debugger and self kill the program
 
-```
+```rs
 use debugprotector::detect;
 
 fn main() {
@@ -12,13 +12,11 @@ fn main() {
 }
 ```
 
-## Using single method.
+## Using single methods.
 
 This crate has the following functions:
-
-```
+```rs
 use debugprotector::antidbg;
-
 antidbg::adbg_is_debugger_present();
 antidbg::adbg_being_debugged_peb();
 antidbg::adbg_nt_global_flag_peb();
