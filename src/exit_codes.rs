@@ -25,3 +25,16 @@ pub enum DebugStatus {
     None
 }
 
+impl DebugStatus {
+    pub fn value(&self) -> Option<i32> {
+        match self {
+            Self::BeingDebuggedPeb => Some(0x1000),
+            Self::IsDebuggerPresent => Some(0x1002),
+            Self::NtGlobalFlagPeb => Some(0x1003),
+            Self::RemoteDebuggerPresent => Some(0x1001),
+            Self::FoundOpenWindow => Some(0x1005),
+            Self::DebuggerProcessFilename => Some(0x1009),
+            Self::None => None
+        }
+    }
+}

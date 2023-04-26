@@ -15,8 +15,13 @@ const CHECKS: [unsafe fn() -> DebugStatus; 7] = [
 
 // Check for a debugger and exit if there is one
 pub fn detect() {
-    if debugger_present() {
-        std::process::exit(0); // Exit code would need to be changed accordingly
+    let dbg = running_debuggers();
+    if let Some(dbg) = dbg.get(0) {
+        // Exit with the corresponding exit code.
+        // Unwrapping is safe because it will only give a `None` if the variant is 
+        // a `DebugStatus::None` which is impossible as `running_debuggers` 
+        // does not allow these in the return value
+        std::process::exit(dbg.value().unwrap()) 
     }
 }
 
