@@ -1,5 +1,6 @@
 #[allow(dead_code)]
 
+#[derive(Debug)]
 /// This enum holds information about whether there is a debugger present
 pub enum DebugStatus {
     /// The PEB flag indicating the presence of a debugger is set. The presence of a debugger is highly likely
