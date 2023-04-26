@@ -2,11 +2,9 @@
 #[allow(asm_sub_register)]
 #[allow(unused_assignments)]
 
-use crate::exit_codes;
 use crate::exit_codes::DebugStatus;
 use std::arch::asm;
 use std::mem::size_of;
-use std::process;
 use std::ptr;
 use winapi::shared::minwindef::BOOL;
 use winapi::shared::windef::HWND;
