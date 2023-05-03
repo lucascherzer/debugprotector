@@ -2,7 +2,7 @@
 
 ## Using default method
 
-The `detect` method will check debugger and self kill the program
+The `detect` method will check for a debugger and self kill the program
 
 ```rs
 use debugprotector::detect;
